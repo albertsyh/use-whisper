@@ -20,7 +20,7 @@ export async function removeSilenceWithFfmpeg({
     await ffmpeg.load()
   }
   const buffer = await currentBlob.arrayBuffer()
-  console.log({ in: buffer.byteLength })
+  if (showLogs) console.log({ in: buffer.byteLength })
   ffmpeg.FS('writeFile', 'in.wav', new Uint8Array(buffer))
   await ffmpeg.run(
     '-i', // Input
@@ -36,7 +36,7 @@ export async function removeSilenceWithFfmpeg({
     'out.mp3' // Output
   )
   const out = ffmpeg.FS('readFile', 'out.mp3')
-  console.log({ out: out.buffer.byteLength, length: out.length })
+  if (showLogs) console.log({ out: out.buffer.byteLength, length: out.length })
   ffmpeg.exit()
   // This checks if it is less than the threshold to be considered as an empty mp3 file
   if (out.length <= threshold) return null
